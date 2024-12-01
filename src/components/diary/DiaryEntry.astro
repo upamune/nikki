@@ -16,7 +16,7 @@ const { blok } = Astro.props;
   )}
   
   <div class="flex justify-between items-start gap-2 mt-6">
-    <DiaryContent date={blok.date} content={blok.content} isDetailPage={true} />
+    <DiaryContent content={blok.content} isDetailPage={true} />
     <DiaryDate date={blok.date} />
   </div>
 </article>

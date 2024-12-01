@@ -4,17 +4,22 @@ import Header from '../components/common/Header.astro';
 import '../styles/global.css';
 
 interface Props {
-  title: string;
-  date?: string;
+  title?: string;
   description?: string;
+  image?: string;
+  article?: boolean;
+  showHeader?: boolean;
 }
 
 const { 
   title = "nikki", 
-  date,
-  description = "日記"
+  description = "日々の記録", 
+  image = "/default-og.jpg",
+  article = false,
+  showHeader = true
 } = Astro.props;
-const ogImageUrl = date ? `/ogp/${date}.png` : '/ogp/default.png';
+
+const siteTitle = title === "nikki" ? "nikki" : `${title} | nikki`;
 ---
 
 <!doctype html>
@@ -24,22 +29,22 @@ const ogImageUrl = date ? `/ogp/${date}.png` : '/ogp/default.png';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>✌</text></svg>"></link>
     <SEO
-      title={title}
+      title={siteTitle}
       description={description}
       openGraph={{
         basic: {
-          title: title,
-          type: 'website',
-          image: ogImageUrl,
+          title: siteTitle,
+          type: article ? 'article' : 'website',
+          image,
         },
         optional: {
           description,
         },
       }}
       twitter={{
-        title: title,
+        title: siteTitle,
         description: description,
-        image: ogImageUrl,
+        image: image,
         site: "@upamune",
         creator: "@upamune",
         card: 'summary_large_image',
