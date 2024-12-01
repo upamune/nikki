@@ -29,14 +29,16 @@ const { data: siblings } = await storyblokApi.get('cdn/stories', {
 const currentIndex = siblings.stories.findIndex(s => s.slug === entry.slug);
 const prevEntry = siblings.stories[currentIndex + 1];
 const nextEntry = siblings.stories[currentIndex - 1];
+const date= new Date(entry.content.date);
+const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 ---
 
 <Layout 
-  title={`${entry.content.date} | nikki`}
+  title={dateStr}
   description={entry.content.content.substring(0, 160)}
   image={entry.content.image?.filename}
   article={true}
 >
   <DiaryEntry blok={entry.content} />
   <Navigation prevEntry={prevEntry} nextEntry={nextEntry} />
-</Layout>
+</Layout>    
