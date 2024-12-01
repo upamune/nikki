@@ -14,3 +14,7 @@ export function formatJapaneseDate(dateStr: string): string {
 
   return `${numberToKanji(month)}月${numberToKanji(day)}日`;
 }
+
+export function formatDate(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}

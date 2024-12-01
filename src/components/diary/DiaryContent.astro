@@ -1,7 +1,22 @@
 ---
+import { generateOgImage } from '../../utils/ogp';
+import { formatJapaneseDate, formatDate } from '../../utils/date';
+import { writeFile } from 'fs/promises';
+
 interface Props {
+  date: string;
   content: string;
   isDetailPage?: boolean;
+}
+
+const { date } = Astro.props;
+const formattedJapaneseDate = date ? formatJapaneseDate(date) : '';
+const formattedDate = date ? formatDate(new Date(date)) : '';
+
+if (date) {
+  const ogImageBuffer = await generateOgImage(formattedJapaneseDate);
+  const ogImagePath = `${process.cwd()}/public/ogp/${formattedDate}.png`;
+  await writeFile(ogImagePath, ogImageBuffer);
 }
 
 const { content, isDetailPage = false } = Astro.props;
