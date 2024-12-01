@@ -32,7 +32,6 @@ const { content, isDetailPage = false } = Astro.props;
     text-orientation: mixed;
     height: 500px;
     margin-left: auto;
-    padding-left: 2rem;
   }
 
   @media (max-width: 768px) {
@@ -42,6 +41,9 @@ const { content, isDetailPage = false } = Astro.props;
 
     .diary-content.detail-view {
       height: 400px;
+      font-size: 1.25rem;
+      overflow-x: overlay;
+      padding-bottom: 1.5rem;
     }
   }
 </style>

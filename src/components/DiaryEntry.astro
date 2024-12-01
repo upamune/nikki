@@ -11,44 +11,59 @@ const formattedDate = new Date(blok.date).toLocaleDateString('ja-JP', {
 ---
 
 <article class="diary-entry" {...storyblokEditable(blok)}>
-  <h1 class="diary-date">{formattedDate}</h1>
-  
-  {blok.image?.filename && (
-    <Image
-      src={blok.image.filename}
-      alt={blok.image.alt || ''}
-      width={800}
-      height={600}
-      format="webp"
-      class="diary-image"
-    />
-  )}
-  
-  <div class="diary-content">
-    {blok.content}
+  <div class="diary-container">
+    <h1 class="diary-date">{formattedDate}</h1>
+    
+    {blok.image?.filename && (
+      <Image
+        src={blok.image.filename}
+        alt={blok.image.alt || ''}
+        width={800}
+        height={600}
+        format="webp"
+        class="diary-image"
+      />
+    )}
+    
+    <div class="diary-content">
+      {blok.content}
+    </div>
   </div>
 </article>
 
 <style>
   .diary-entry {
     margin: 4rem 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .diary-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 2rem;
   }
 
   .diary-date {
     writing-mode: vertical-rl;
     text-orientation: upright;
     font-size: 1.5rem;
-    margin: 2rem 0;
     letter-spacing: 0.5rem;
+    flex-shrink: 0;
+    position: sticky;
+    right: 0;
+    height: min-content;
   }
 
   .diary-content {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     height: 500px;
-    margin: 2rem auto;
     line-height: 2;
     overflow-x: auto;
+    padding-bottom: 1rem; /* スクロールバー用の余白 */
   }
 
   .diary-image {
@@ -59,8 +74,16 @@ const formattedDate = new Date(blok.date).toLocaleDateString('ja-JP', {
   }
 
   @media (max-width: 768px) {
+    .diary-container {
+      gap: 1rem;
+    }
+
     .diary-content {
       height: 400px;
+    }
+
+    .diary-date {
+      font-size: 1.25rem;
     }
   }
 </style>

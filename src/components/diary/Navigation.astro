@@ -28,8 +28,8 @@ const { prevEntry, nextEntry } = Astro.props;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 3rem 0;
-    padding-top: 2rem;
+    margin: 1rem 0;
+    padding-top: 1.5rem;
     border-top: 1px solid #eee;
   }
 
@@ -47,5 +47,11 @@ const { prevEntry, nextEntry } = Astro.props;
     padding: 0.5rem 1rem;
     border: 1px solid var(--color-accent);
     border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .entry-navigation {
+      margin: 1.5rem 0;
+    }
   }
 </style>

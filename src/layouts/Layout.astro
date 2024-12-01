@@ -49,11 +49,19 @@ const siteTitle = title === "nikki" ? "nikki" : `${title} | nikki`;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>✌</text></svg>">
+    <style>
+      @media (max-width: 768px) {
+        #main-content {
+          padding-top: 0;
+          padding-bottom: 0;
+        }
+      }
+    </style>
   </head>
   <body class="min-h-screen bg-diary-bg">
     <div class="min-h-screen flex flex-col">
       <Header />
-      <main class="flex-1 w-full px-4 md:px-6 py-8">
+      <main id="main-content" class="flex-1 w-full px-4 md:px-6 py-2">
         <div class="max-w-4xl mx-auto">
           <slot />
         </div>
