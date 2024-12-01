@@ -18,31 +18,31 @@ const { entry, slug } = Astro.props;
 const formattedDate = formatJapaneseDate(entry.date);
 ---
 
-<a 
-  href={`/diary/${slug}`} 
-  class="diary-card group"
->
-  <div class="image-frame">
-    <Image
-      src={entry.image.filename}
-      alt={entry.image.alt}
-      width={400}
-      height={300}
-      format="webp"
-      class="transition-transform duration-300 group-hover:scale-105"
-    />
-  </div>
-  <div class="content-wrapper">
-    <time datetime={entry.date} class="date">
-      {formattedDate}
-    </time>
-    <div class="content-container">
-      <p class="excerpt">
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+  <a href={`/diary/${slug}`} class="block">
+    <div class="aspect-video relative overflow-hidden">
+      <Image
+        src={entry.image.filename}
+        alt={entry.image.alt}
+        width={400}
+        height={300}
+        format="webp"
+        class="object-cover w-full h-full"
+      />
+    </div>
+    <div class="p-4 md:p-6">
+      <h2 class="text-xl md:text-2xl font-bold mb-2 line-clamp-2">
+        {entry.image.alt}
+      </h2>
+      <p class="text-sm md:text-base text-gray-600 mb-4 line-clamp-3">
         {entry.content}
       </p>
+      <div class="text-sm text-gray-500">
+        <time>{formattedDate}</time>
+      </div>
     </div>
-  </div>
-</a>
+  </a>
+</div>
 
 <style>
   .diary-card {
@@ -61,7 +61,6 @@ const formattedDate = formatJapaneseDate(entry.date);
   .image-frame {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 4/3;
     border: 1px solid #eee;
   }
 
