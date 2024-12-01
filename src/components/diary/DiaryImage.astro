@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: string;
+  alt: string;
+}
+
+const { src, alt } = Astro.props;
+---
+
+<div class="diary-image-container">
+  <Image
+    src={src}
+    alt={alt}
+    width={800}
+    height={600}
+    format="webp"
+    class="diary-image"
+  />
+</div>
+
+<style>
+  .diary-image-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .diary-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    object-fit: cover;
+    aspect-ratio: 4/3;
+  }
+</style>

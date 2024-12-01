@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import { formatJapaneseDate } from '../../utils/date';
+
+interface Props {
+  entry: {
+    date: string;
+    image: {
+      filename: string;
+      alt: string;
+    };
+    content: string;
+  };
+}
+
+const { entry } = Astro.props;
+const formattedDate = formatJapaneseDate(entry.date);
+---
+
+<a 
+  href={`/${entry.date}`} 
+  class="diary-card group"
+>
+  <div class="image-frame">
+    <Image
+      src={entry.image.filename}
+      alt={entry.image.alt}
+      width={400}
+      height={300}
+      format="webp"
+      class="transition-transform duration-300 group-hover:scale-105"
+    />
+  </div>
+  <div class="content-wrapper">
+    <time datetime={entry.date} class="date">
+      {formattedDate}
+    </time>
+    <div class="content-container">
+      <p class="excerpt">
+        {entry.content}
+      </p>
+    </div>
+  </div>
+</a>
+
+<style>
+  .diary-card {
+    display: block;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+  }
+
+  .diary-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .image-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    border: 1px solid #eee;
+  }
+
+  .content-wrapper {
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .date {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.1rem;
+    color: #666;
+    letter-spacing: 0.2rem;
+    flex-shrink: 0;
+    height: 200px;
+    display: flex;
+    align-items: center;
+  }
+
+  .content-container {
+    flex-grow: 1;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .excerpt {
+    writing-mode: horizontal-tb;
+    font-family: 'Shippori Mincho', serif;
+    line-height: 1.8;
+    color: #333;
+    height: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+  }
+</style>

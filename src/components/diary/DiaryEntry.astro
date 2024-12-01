@@ -1,0 +1,22 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+import DiaryDate from './DiaryDate.astro';
+import DiaryContent from './DiaryContent.astro';
+import DiaryImage from './DiaryImage.astro';
+
+const { blok } = Astro.props;
+---
+
+<article class="max-w-3xl mx-auto mt-8" {...storyblokEditable(blok)}>
+  {blok.image?.filename && (
+    <DiaryImage
+      src={blok.image.filename}
+      alt={blok.image.alt || ''}
+    />
+  )}
+  
+  <div class="flex justify-between items-start gap-8 mt-6">
+    <DiaryContent content={blok.content} isDetailPage={true} />
+    <DiaryDate date={blok.date} />
+  </div>
+</article>

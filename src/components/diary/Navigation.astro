@@ -1,0 +1,51 @@
+---
+import { formatJapaneseDate } from '../../utils/date';
+
+interface Props {
+  prevEntry: any;
+  nextEntry: any;
+}
+
+const { prevEntry, nextEntry } = Astro.props;
+---
+
+<nav class="entry-navigation">
+  {prevEntry && (
+    <a href={`/${prevEntry.content.date}`} class="nav-link prev">
+      ← {formatJapaneseDate(prevEntry.content.date)}
+    </a>
+  )}
+  <a href="/" class="nav-link home">トップページへ</a>
+  {nextEntry && (
+    <a href={`/${nextEntry.content.date}`} class="nav-link next">
+      {formatJapaneseDate(nextEntry.content.date)} →
+    </a>
+  )}
+</nav>
+
+<style>
+  .entry-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3rem 0;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+  }
+
+  .nav-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .nav-link:hover {
+    text-decoration: underline;
+  }
+
+  .home {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 4px;
+  }
+</style>

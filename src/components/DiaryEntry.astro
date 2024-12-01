@@ -1,0 +1,66 @@
+---
+import { Image } from 'astro:assets';
+import { storyblokEditable } from '@storyblok/astro';
+
+const { blok } = Astro.props;
+const formattedDate = new Date(blok.date).toLocaleDateString('ja-JP', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<article class="diary-entry" {...storyblokEditable(blok)}>
+  <h1 class="diary-date">{formattedDate}</h1>
+  
+  {blok.image?.filename && (
+    <Image
+      src={blok.image.filename}
+      alt={blok.image.alt || ''}
+      width={800}
+      height={600}
+      format="webp"
+      class="diary-image"
+    />
+  )}
+  
+  <div class="diary-content">
+    {blok.content}
+  </div>
+</article>
+
+<style>
+  .diary-entry {
+    margin: 4rem 0;
+  }
+
+  .diary-date {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: 1.5rem;
+    margin: 2rem 0;
+    letter-spacing: 0.5rem;
+  }
+
+  .diary-content {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    height: 500px;
+    margin: 2rem auto;
+    line-height: 2;
+    overflow-x: auto;
+  }
+
+  .diary-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .diary-content {
+      height: 400px;
+    }
+  }
+</style>

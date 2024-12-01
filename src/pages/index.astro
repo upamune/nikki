@@ -1,0 +1,45 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DiaryGrid from '../components/diary/DiaryGrid.astro';
+import AuthorInfo from '../components/author/AuthorInfo.astro';
+import { mockDiaryEntries, mockAuthorInfo } from '../utils/mockData';
+import { useStoryblokApi } from '@storyblok/astro';
+
+const page = Astro.url.searchParams.get('page') || '1';
+const perPage = 6;
+
+let entries = [];
+let authorData = null;
+let totalPages = 1;
+
+if (import.meta.env.STORYBLOK_TOKEN === 'fake') {
+  entries = mockDiaryEntries;
+  authorData = mockAuthorInfo;
+  totalPages = Math.ceil(entries.length / perPage);
+} else {
+  const storyblokApi = useStoryblokApi();
+  const { data } = await storyblokApi.get('cdn/stories', {
+    version: import.meta.env.DEV ? 'draft' : 'published',
+    content_type: 'diaryEntry',
+    sort_by: 'content.date:desc',
+    per_page: perPage,
+    page
+  });
+  entries = data.stories;
+  totalPages = Math.ceil(data.total / perPage);
+
+  const { data: authorResponse } = await storyblokApi.get('cdn/stories/author', {
+    version: import.meta.env.DEV ? 'draft' : 'published'
+  });
+  authorData = authorResponse.story;
+}
+---
+
+<Layout title="nikki" showHeader={true}>
+  <DiaryGrid 
+    entries={entries} 
+    currentPage={parseInt(page)} 
+    totalPages={totalPages} 
+  />
+  <AuthorInfo blok={authorData.content} />
+</Layout>

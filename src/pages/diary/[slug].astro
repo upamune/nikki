@@ -1,0 +1,60 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DiaryEntry from '../../components/diary/DiaryEntry.astro';
+import Navigation from '../../components/diary/Navigation.astro';
+import { useStoryblokApi } from '@storyblok/astro';
+import { mockDiaryEntries } from '../../utils/mockData';
+
+export async function getStaticPaths() {
+  if (import.meta.env.STORYBLOK_TOKEN === 'fake') {
+    return mockDiaryEntries.map(entry => ({
+      params: { slug: entry.content.slug },
+      props: { entry }
+    }));
+  }
+
+  const storyblokApi = useStoryblokApi();
+  const { data } = await storyblokApi.get('cdn/stories', {
+    version: 'published',
+    content_type: 'diaryEntry'
+  });
+
+  return data.stories.map(story => ({
+    params: { slug: story.slug },
+    props: { entry: story }
+  }));
+}
+
+const { entry } = Astro.props;
+const { slug } = Astro.params;
+
+let prevEntry = null;
+let nextEntry = null;
+
+if (import.meta.env.STORYBLOK_TOKEN === 'fake') {
+  const index = mockDiaryEntries.findIndex(e => e.content.slug === slug);
+  prevEntry = mockDiaryEntries[index - 1];
+  nextEntry = mockDiaryEntries[index + 1];
+} else {
+  const storyblokApi = useStoryblokApi();
+  const { data: siblings } = await storyblokApi.get('cdn/stories', {
+    version: 'published',
+    content_type: 'diaryEntry',
+    sort_by: 'content.date:desc'
+  });
+  
+  const index = siblings.stories.findIndex(s => s.slug === slug);
+  prevEntry = siblings.stories[index - 1];
+  nextEntry = siblings.stories[index + 1];
+}
+---
+
+<Layout 
+  title={`${entry.content.date} | 日記`}
+  description={entry.content.content.substring(0, 160)}
+  image={entry.content.image?.filename}
+  article={true}
+>
+  <DiaryEntry blok={entry.content} />
+  <Navigation prevEntry={prevEntry} nextEntry={nextEntry} />
+</Layout>

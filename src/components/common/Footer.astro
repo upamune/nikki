@@ -1,0 +1,17 @@
+---
+import AuthorInfo from '../author/AuthorInfo.astro';
+
+interface Props {
+  authorData: any;
+}
+
+const { authorData } = Astro.props;
+---
+
+<footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
+  <div class="max-w-3xl mx-auto px-4 py-4">
+    <AuthorInfo blok={authorData.content} />
+  </div>
+</footer>
+
+<div class="h-32"><!-- Spacer to prevent content from being hidden behind fixed footer --></div>

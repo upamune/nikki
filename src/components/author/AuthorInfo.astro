@@ -1,0 +1,38 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+import AuthorAvatar from './AuthorAvatar.astro';
+import AuthorSocial from './AuthorSocial.astro';
+
+const { blok } = Astro.props;
+---
+
+<footer class="author-info" {...storyblokEditable(blok)}>
+  {blok.avatar?.filename && (
+    <AuthorAvatar src={blok.avatar.filename} name={blok.name} />
+  )}
+  <div class="author-details">
+    <h3 class="author-name">{blok.name}</h3>
+    {blok.twitter && <AuthorSocial twitter={blok.twitter} />}
+  </div>
+</footer>
+
+<style>
+  .author-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 0;
+    border-top: 1px solid #eee;
+  }
+
+  .author-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .author-name {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+</style>

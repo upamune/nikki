@@ -1,0 +1,27 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: string;
+  name: string;
+}
+
+const { src, name } = Astro.props;
+---
+
+<Image
+  src={src}
+  alt={`${name} avatar`}
+  width={48}
+  height={48}
+  format="webp"
+  class="author-avatar"
+/>
+
+<style>
+  .author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+</style>
