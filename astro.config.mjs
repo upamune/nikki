@@ -22,5 +22,5 @@ export default defineConfig({
     tailwind(),
   ],
   output: 'static',
-  site: 'https://d.serizawa.dev',
+  site: 'https://nikki.serizawa.me',
 });
