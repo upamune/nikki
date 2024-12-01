@@ -3,16 +3,25 @@ import { storyblokEditable } from '@storyblok/astro';
 import AuthorAvatar from './AuthorAvatar.astro';
 import AuthorSocial from './AuthorSocial.astro';
 
-const { blok } = Astro.props;
+const avatar = {
+  id: 'upamune',
+  name: 'うぱ',
+  iconUrl: 'https://i.gyazo.com/00939e43916ec4978c8f418748806484.png',
+  social: {
+    twitter: {
+      url: 'upamune',
+    },
+  }
+};
 ---
 
-<footer class="author-info" {...storyblokEditable(blok)}>
-  {blok.avatar?.filename && (
-    <AuthorAvatar src={blok.avatar.filename} name={blok.name} />
+<footer class="author-info"}>
+  {avatar.iconUrl && (
+    <AuthorAvatar src={avatar.iconUrl} name={avatar.name} />
   )}
   <div class="author-details">
-    <h3 class="author-name">{blok.name}</h3>
-    {blok.twitter && <AuthorSocial twitter={blok.twitter} />}
+    <h3 class="author-name">{avatar.name}</h3>
+    {avatar.social.twitter && <AuthorSocial name={avatar.id} twitter={avatar.social.twitter.url} />}
   </div>
 </footer>
 

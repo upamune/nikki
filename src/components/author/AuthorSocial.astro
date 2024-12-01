@@ -1,18 +1,19 @@
 ---
 interface Props {
   twitter: string;
+  name: string;
 }
 
-const { twitter } = Astro.props;
+const { twitter, name } = Astro.props;
 ---
 
 <a 
-  href={`https://twitter.com/${twitter}`}
+  href={`https://x.com/${twitter}`}
   target="_blank"
   rel="noopener noreferrer"
   class="social-link"
 >
-  @{twitter}
+  @{name}
 </a>
 
 <style>

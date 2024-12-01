@@ -8,14 +8,10 @@ interface Props {
 const { entries = [] } = Astro.props;
 ---
 
-<div 
-  class="grid grid-cols-1 md:grid-cols-2 gap-8"
-  id="diary-grid"
-  data-current-page="1"
->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
   {entries.length > 0 ? (
     entries.map(entry => (
-      <DiaryCard entry={entry.content} />
+      <DiaryCard entry={entry.content} slug={entry.slug} />
     ))
   ) : (
     <div class="col-span-2 text-center py-12 text-gray-500">
@@ -23,73 +19,3 @@ const { entries = [] } = Astro.props;
     </div>
   )}
 </div>
-
-<div id="scroll-trigger" class="h-10"></div>
-
-<script>
-  let loading = false;
-  let currentPage = 1;
-  const grid = document.getElementById('diary-grid');
-  const trigger = document.getElementById('scroll-trigger');
-
-  const loadMoreEntries = async () => {
-    if (loading) return;
-    loading = true;
-
-    try {
-      const nextPage = currentPage + 1;
-      const response = await fetch(`/api/entries?page=${nextPage}`);
-      const data = await response.json();
-
-      if (data.entries?.length > 0) {
-        data.entries.forEach(entry => {
-          const card = createDiaryCard(entry);
-          grid?.appendChild(card);
-        });
-        currentPage = nextPage;
-        grid?.setAttribute('data-current-page', String(nextPage));
-      }
-    } catch (error) {
-      console.error('Failed to load more entries:', error);
-    } finally {
-      loading = false;
-    }
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !loading) {
-        loadMoreEntries();
-      }
-    });
-  }, { rootMargin: '100px' });
-
-  if (trigger) {
-    observer.observe(trigger);
-  }
-
-  function createDiaryCard(entry: any) {
-    const card = document.createElement('div');
-    card.className = 'diary-card-animation';
-    return card;
-  }
-</script>
-
-<style>
-  .diary-card-animation {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.6s ease forwards;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-</style>

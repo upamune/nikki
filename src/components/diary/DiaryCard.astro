@@ -11,14 +11,15 @@ interface Props {
     };
     content: string;
   };
+  slug: string;
 }
 
-const { entry } = Astro.props;
+const { entry, slug } = Astro.props;
 const formattedDate = formatJapaneseDate(entry.date);
 ---
 
 <a 
-  href={`/${entry.date}`} 
+  href={`/diary/${slug}`} 
   class="diary-card group"
 >
   <div class="image-frame">

@@ -1,7 +1,6 @@
 import { defineConfig } from 'astro/config';
 import storyblok from '@storyblok/astro';
 import { loadEnv } from 'vite';
-import vercel from '@astrojs/vercel/static';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 
@@ -23,6 +22,5 @@ export default defineConfig({
     tailwind(),
   ],
   output: 'static',
-  adapter: vercel(),
-  site: 'https://your-domain.com',
+  site: 'https://d.serizawa.dev',
 });

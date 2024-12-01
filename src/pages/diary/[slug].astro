@@ -3,20 +3,13 @@ import Layout from '../../layouts/Layout.astro';
 import DiaryEntry from '../../components/diary/DiaryEntry.astro';
 import Navigation from '../../components/diary/Navigation.astro';
 import { useStoryblokApi } from '@storyblok/astro';
-import { mockDiaryEntries } from '../../utils/mockData';
 
 export async function getStaticPaths() {
-  if (import.meta.env.STORYBLOK_TOKEN === 'fake') {
-    return mockDiaryEntries.map(entry => ({
-      params: { slug: entry.content.slug },
-      props: { entry }
-    }));
-  }
-
   const storyblokApi = useStoryblokApi();
   const { data } = await storyblokApi.get('cdn/stories', {
     version: 'published',
-    content_type: 'diaryEntry'
+    content_type: 'diaryEntry',
+    sort_by: 'content.date:desc'
   });
 
   return data.stories.map(story => ({
@@ -26,31 +19,20 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { slug } = Astro.params;
+const storyblokApi = useStoryblokApi();
+const { data: siblings } = await storyblokApi.get('cdn/stories', {
+  version: 'published',
+  content_type: 'diaryEntry',
+  sort_by: 'content.date:desc'
+});
 
-let prevEntry = null;
-let nextEntry = null;
-
-if (import.meta.env.STORYBLOK_TOKEN === 'fake') {
-  const index = mockDiaryEntries.findIndex(e => e.content.slug === slug);
-  prevEntry = mockDiaryEntries[index - 1];
-  nextEntry = mockDiaryEntries[index + 1];
-} else {
-  const storyblokApi = useStoryblokApi();
-  const { data: siblings } = await storyblokApi.get('cdn/stories', {
-    version: 'published',
-    content_type: 'diaryEntry',
-    sort_by: 'content.date:desc'
-  });
-  
-  const index = siblings.stories.findIndex(s => s.slug === slug);
-  prevEntry = siblings.stories[index - 1];
-  nextEntry = siblings.stories[index + 1];
-}
+const currentIndex = siblings.stories.findIndex(s => s.slug === entry.slug);
+const prevEntry = siblings.stories[currentIndex + 1];
+const nextEntry = siblings.stories[currentIndex - 1];
 ---
 
 <Layout 
-  title={`${entry.content.date} | 日記`}
+  title={`${entry.content.date} | nikki`}
   description={entry.content.content.substring(0, 160)}
   image={entry.content.image?.filename}
   article={true}
